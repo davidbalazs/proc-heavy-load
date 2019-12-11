@@ -32,5 +32,3 @@ spec:
         configMap:
           name: test-script-configmap  
           defaultMode: 0777
-      nodeSelector:
-        kubernetes.io/hostname: ip-10-0-0-4.us-west-2.compute.internal

@@ -1,0 +1,28 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-script-configmap
+  labels:
+    script: test-cm
+data:
+  test_script.sh: |-
+    NUM_OF_ITERATIONS=$1
+    for (( count=1; count<=4400; count++ ))
+        do
+            sleep 20000 &
+            echo "$count batch $0"
+    done
+    NEXT_ITERATIONS=$((NUM_OF_ITERATIONS - 4400))
+    BATCH=$((NEXT_ITERATIONS / 100))
+    for (( x=1; x<=$BATCH; x++ ))
+    do   
+        for (( count=1; count<=100; count++ ))
+        do
+            sleep 20000 &
+            echo "$count batch $x"
+        done
+        sleep 60
+    done   
+     
+    wait

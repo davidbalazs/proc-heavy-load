@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app
+  labels:
+    app: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-app
+  template:
+    metadata:
+      labels:
+        app: test-app
+    spec:
+      containers:
+      - name: test
+        image: centos
+        command: ["bash", "/usr/local/bin/test_script.sh", "5500"]
+        resources:
+          requests:
+            memory: "2Gi"
+          limits:
+            memory: "2Gi"
+        volumeMounts:
+        - name: test-script
+          mountPath: /usr/local/bin/test_script.sh
+          subPath: test_script.sh
+      volumes:
+      - name: test-script
+        configMap:
+          name: test-script-configmap  
+          defaultMode: 0777
+      nodeSelector:
+        kubernetes.io/hostname: ip-10-0-0-4.us-west-2.compute.internal
